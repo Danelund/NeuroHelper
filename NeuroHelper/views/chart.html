@@ -1,0 +1,25 @@
+<div data-role="view" data-layout="main" data-model="APP.models.chart">
+  <h1 data-bind="html: title"></h1>
+     <div id="chart" data-role="chart"
+                 data-legend="{ position: 'bottom' }"
+                 data-series-defaults="{ type: 'line' }"
+                 data-series="[
+                                 { field: 'Pause', name: 'Pause' },
+                                 { field: 'Energi', name: 'Energi' }
+                             ]"
+                 data-category-axis="{ field: 'CreatedAt', type: 'date', baseUnit: 'weeks' }"
+                 data-bind="source: ds"></div>
+    <div class="k-header centerwidget">
+    <label>Vælg interval</label><input data-role="dropdownlist"
+           data-text-field="CatName"
+           data-value-field="value"
+               data-bind="value: selectedCategory,
+                          source: intervals,
+                          events: {
+                          change: axisChange
+                          }"
+               style="width: 300px"
+               />
+        </div>
+
+        </div>

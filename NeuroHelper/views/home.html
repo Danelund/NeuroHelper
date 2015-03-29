@@ -1,3 +1,26 @@
-<div data-role="view" data-title="Home" data-layout="main" data-model="APP.models.home">
+<div data-role="view" data-layout="main" data-model="APP.models.home">
   <h1 data-bind="html: title"></h1>
+    <form action="#" onclick="">
+        <ul id="formlist" data-role="listview" data-style="inset">
+            <li>
+                Hvor meget energi har du nu på en skala fra 1-5?
+            </li>
+            <li>
+            &nbsp;<div id="sldEnergy" data-role="slider" data-max="5" data-min="1" data-bind="value: energi"></div>
+            </li>
+            <li>
+                Har du holdt pause de sidste to timer?
+            </li>
+            <li>
+            &nbsp;<input id="chkPause" type="checkbox" data-role="switch" data-bind="checked: pause" />
+            </li>
+        </ul>
+                <div class="centerwidget">
+        <a id="btnRegister" href="#foo" data-role="button" data-bind="click: register">Registrer</a>
+                </div>
+    </form>
+    <br /><br/>
+                   <div class="centerwidget">  
+    <a id="btnNotify" href="#foo" data-role="button" onclick="submit()">notificer</a>
+                </div>
 </div>

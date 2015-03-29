@@ -1,5 +1,6 @@
 {
   "CorePlugins": [
+    "de.appplant.cordova.plugin.local-notification@0.8.0dev3",
     "org.apache.cordova.battery-status",
     "org.apache.cordova.camera",
     "org.apache.cordova.contacts",

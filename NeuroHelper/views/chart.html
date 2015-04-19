@@ -1,25 +1,32 @@
 <div data-role="view" data-layout="main" data-model="APP.models.chart">
-  <h1 data-bind="html: title"></h1>
-     <div id="chart" data-role="chart"
+  <!--<h1 data-bind="html: title"></h1>-->
+    <ul data-role="listview" data-style="inset" data-type="group"><li>Graf<ul>
+        <li> <div id="chart" data-role="chart"
+                 data-theme="silver"
                  data-legend="{ position: 'bottom' }"
-                 data-series-defaults="{ type: 'line' }"
+                 data-series-defaults="{ type: 'line', aggregate: 'avg'  }"
                  data-series="[
-                                 { field: 'Pause', name: 'Pause' },
-                                 { field: 'Energi', name: 'Energi' }
+                                 { field: 'Energi', name: 'Energi', style: 'smooth', note: 'Note'},
+                                 { field: 'Pause', name: 'Pause',  style: 'step'}
                              ]"
-                 data-category-axis="{ field: 'CreatedAt', type: 'date', baseUnit: 'weeks' }"
+                 data-category-axis="{ field: 'CreatedAt', type: 'date' }"
+                 data-series-hover="onSeriesHover"
                  data-bind="source: ds"></div>
-    <div class="k-header centerwidget">
-    <label>Vælg interval</label><input data-role="dropdownlist"
+        </li>
+        <li><label>Vælg interval</label><input data-role="dropdownlist"
+           data-theme="silver"
            data-text-field="CatName"
            data-value-field="value"
                data-bind="value: selectedCategory,
-                          source: intervals,
-                          events: {
-                          change: axisChange
-                          }"
-               style="width: 300px"
+                          source: intervals"
+               style="width: 10em"
                />
-        </div>
-
-        </div>
+        <li><label>Periode</label><input data-role="dropdownlist" data-theme="silver" data-text-field="PName" data-value-field="value" data-bind="value: selectedPeriod,
+                          source: periods,
+                          events: {
+                          change: axisChange}"
+               style="width: 10em"</li>
+        </li></ul>
+        <li><label>Note</label><div id="chartnote">
+            </div></li>
+    </ul>

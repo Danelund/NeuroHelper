@@ -363,6 +363,10 @@ body, html {
     border-style:none !important;
     border-width:0px !important;
 }
+#formlist
+{
+    disp
+}
 .km-switch,.k-slider
 {
     line-height:30px !important;
@@ -375,5 +379,17 @@ body, html {
 {
     margin: 0 auto;
 }
+.formcontainer
+{line-height:30px; margin:1em;}
 .centerwidget
 {width:100%;text-align:center;vertical-align:middle;}
+/*slider hacks*/
+.k-draghandle{background-color:none;}
+.k-slider-selection, .k-slider-track{margin-top:0px !important;}
+
+#note
+{  background: #fff;
+  width: 100%;
+  margin: 0.001em;
+  border: 1px dashed #ccc;
+border-radius:4px;}

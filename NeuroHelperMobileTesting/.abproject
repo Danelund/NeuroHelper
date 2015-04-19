@@ -1,0 +1,8 @@
+{
+  "ProjectName": "NeuroHelperMobileTesting",
+  "ProjectGuid": "094c4430-edc2-4944-b0ef-863c2e59a009",
+  "projectVersion": 1,
+  "ProjectTypeGuids": "{6319b66f-8dff-4073-91be-3cd48a2fdeb3}",
+  "FrameworkVersion": "1.0",
+  "Framework": "MobileTesting"
+}

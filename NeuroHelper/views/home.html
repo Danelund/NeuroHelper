@@ -1,7 +1,7 @@
-<div data-role="view" data-layout="main" data-model="APP.models.home">
-  <h1 data-bind="html: title"></h1>
+<div data-role="view" data-layout="main" data-model="APP.models.home" data-init="init">
+  <!--<h1 data-bind="html: title"></h1>-->
     <form action="#" onclick="">
-        <ul id="formlist" data-role="listview" data-style="inset">
+        <!--<ul id="formlist" data-role="listview" data-style="inset">
             <li>
                 Hvor meget energi har du nu på en skala fra 1-5?
             </li>
@@ -14,13 +14,40 @@
             <li>
             &nbsp;<input id="chkPause" type="checkbox" data-role="switch" data-bind="checked: pause" />
             </li>
-        </ul>
+        </ul>-->
+        <ul data-role="listview" data-style="inset" data-type="group">
+            <li>Energimåling
+                <ul>
+                    <li>
+            Vurdér din energi fra 1-5<div class="sliderwrapper centerwidget " style="width:100%; height:1em; clear:both">
+                        <div id="sldEnergy" data-role="slider" data-max="5" data-min="1" data-bind="value: energi"></div>
+            </div></li>
+            <li>Har du holdt pause?
+            <input id="chkPause" type="checkbox" data-role="switch" data-bind="checked: pause" data-on-label="Ja" data-off-label="Nej" />
+            </li>
+            <li>Note<br /><textarea id="note" style="resize: none" data-bind="value: note"></textarea></li>
+            </ul><br />
                 <div class="centerwidget">
         <a id="btnRegister" href="#foo" data-role="button" data-bind="click: register">Registrer</a>
                 </div>
+            
     </form>
-    <br /><br/>
-                   <div class="centerwidget">  
-    <a id="btnNotify" href="#foo" data-role="button" onclick="submit()">notificer</a>
-                </div>
+        </li></ul>
+<div style="vertical-align: bottom;"><ul data-role="listview" data-style="inset" data-type="group">
+<li>Indstillinger
+                   <ul>
+                       <li>Påmindelser <input data-role="switch" id="switchNotification" data-on-label="til" data-off-label="fra" data-bind="checked: notifications, events: { change: setNotifications }"/></li>
+                       <li>Interval <input data-role="dropdownlist" id="notificationgap" data-theme="silver"
+           data-text-field="IntName"
+           data-value-field="value"
+               data-bind="value: notification_interval,
+                          source: intervals,
+                          events: {
+                          change: setNotifications
+                          },
+                          enabled: notifications" style="width:5em"></li>
+    </ul>
+    </li></div><ul></ul><div><!--<div class="centerwidget">
+                <a id="btnNotify" href="#" data-role="button" data-bind="click: notify">Notificer</a> <a id="btnCNotify" href="#" data-role="button" data-bind="click: cancelnotify">Anuller</a>
+                </div>-->
 </div>

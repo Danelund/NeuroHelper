@@ -1,102 +1,115 @@
-var pushnotify = {};
-(function (global, $) {
-    // This is your Telerik Backend Services API key.
-    var baasApiKey = 'gdirbSCcn4SGeytt';
+//app must be defined outside of function scope in previous script file
+/* insert these lines of code in the main app.js
+ document.addEventListener('deviceready', function () {
 
-    // This is the scheme (http or https) to use for accessing Telerik Backend Services.
-    var baasScheme = 'http';
+         if (window.plugin) {
+              notification = window.plugin.notification;
+              }
+},false);*/
+(function (window, global, $) {
 
-    //This is your Android project number. It is required by Google in order to enable push notifications for your app. You do not need it for iPhone.
-    var androidProjectNumber = '275848670378';
-
-    //Set this to true in order to test push notifications in the emulator. Note, that you will not be able to actually receive 
-    //push notifications because we will generate fake push tokens. But you will be able to test your other push-related functionality without getting errors.
-    var emulatorMode = false;
-
-
-    window.onerror = function myErrorHandler(errorMsg, url, lineNumber) {
-        alert(url + ":" + lineNumber + ": " + errorMsg);
-        return false;
+document.addEventListener('deviceready', onDeviceReady, false);
+  
+function onDeviceReady() {
+    if(notification)
+    {
+    notification.local.setDefaults({
+                                 autoCancel : true // removes the notification from notification centre when clicked
+                             });
     }
-
-    var onDeviceReady = function () {
-        if (!baasApiKey || baasApiKey == 'BAAS_API_KEY') {
-            alert("Missing API key!<br /><br />It appears that you have not filled in your Telerik Backend Services API key.<br/><br/>Please go to scripts/app/main.js and enter your Telerik Backend Services API key at the beginning of the file.");
-        } else if ((!androidProjectNumber || androidProjectNumber == 'GOOGLE_PROJECT_NUMBER') && device.platform.toLowerCase() == "android") {
-            alert("Missing Android Project Number!<br /><br />It appears that you have not filled in your Android project number. It is required for push notifications on Android.<br/><br/>Please go to scripts/app/main.js and enter your Android project number at the beginning of the file.");
-        } else {
-            //perform the push registration if nothing is wrong
-            console.log("nothing wrong, adding push notification");
-            registerForPush();
+    
+    app.notify = function(payload, callback)
+    {
+        if(notification)
+        {
+            notification.local.add(payload, callback);
+       }
+    }
+    
+    
+    app.testnotify = function()
+    {
+        notification.local.hasPermission(function (granted) {
+        // console.log('Permission has been granted: ' + granted);
+        });
+            
+        this.notify({
+                     id : 5,
+                  title : 'I will bother you every minute',
+                message : '.. until you cancel all notifications',
+                 repeat : 'hourly',
+             autoCancel : false,
+                   date : new Date(new Date().getTime() + 10*1000)
+            });
+    }
+    
+    app.cancelnotifications = function()
+    {
+        if(notification)
+        {
+        notification.local.cancelAll(function(){alert("cancelled");});
         }
-    };
+    }
+    
+    app.setupnotificationinterval = function(interval)
+    {
+         //set hour to 10 for starting hour 
+        var hour = 10;
+        
+        //set a notificationDate time.
+        var notificationDate = new Date();
+        //manipulate the dateobject to fit, 10:00:00
+        notificationDate.setMinutes(0); notificationDate.setSeconds(0);
+        //loop as long as the notification hour interval doesnt exceed 12 hours (from 10-22).
+        while(hour < 22)
+        {
+           notificationDate.setHours(hour);
+             
+           this.notify({
+                 id : 'regular-'+hour,
+              title : 'Husk at registrere energi',
+            message : 'Det er tid til at du skal registrere din energi',
+             repeat : 'daily',
+         autoCancel : true,
+               date : notificationDate
+        },function(){alert('alarm sat til kl. ' + notificationDate.getHour());});
+            
+        hour = hour + interval;
+        console.log(notificationDate)
+        }
+       
+    }
+    /*
+	if (window.plugin) {
+		// set some global defaults for all local notifications
+		window.plugin.notification.local.setDefaults({
+														 autoCancel : true // removes the notification from notification centre when clicked
+													 });
+    
+		// triggered when a notification was clicked outside the app (background)
+		window.plugin.notification.local.onclick = function (id, state, json) {
+			var message = 'ID: ' + id + (json == '' ? '' : '\nData: ' + json);
+		};
 
-    document.addEventListener("deviceready", onDeviceReady, false);
-
-    //Initialize the Telerik Backend Services SDK
-    var el = new Everlive({
-        apiKey: baasApiKey,
-        scheme: baasScheme
-    });
-
-    var _onDeviceIsRegistered = function () {
-        Console.log("SUCCESS!<br /><br />The device has been registered for push notifications.<br /><br />")
-    };
-
-    var _onDeviceUnregistered = function () {
-        Console.log("Device successfully unregistered.");
-    };
-
-    var onAndroidPushReceived = function (args) {
-        alert('Android notification received: ' + JSON.stringify(args));
-    };
-
-    var onIosPushReceived = function (args) {
-        alert('iOS notification received: ' + JSON.stringify(args));
-    };
-
-    var onWP8PushReceived = function (args) {
-        alert('Windows Phone notification received: ' + JSON.stringify(args));
-    };
-
-    var registerForPush = function () {
-        var pushSettings = {
-            android: {
-                senderID: androidProjectNumber
-            },
-            iOS: {
-                badge: "true",
-                sound: "true",
-                alert: "true"
-            },
-            wp8: {
-                channelName: 'EverlivePushChannel'
-            },
-            notificationCallbackAndroid: onAndroidPushReceived,
-            notificationCallbackIOS: onIosPushReceived,
-            notificationCallbackWP8: onWP8PushReceived,
-            customParameters: {
-                Age: 21
-            }
-        };
-        el.push.register(pushSettings)
-            .then(
-                _onDeviceIsRegistered,
-                function (err) {
-                    alert('REGISTER ERROR: ' + JSON.stringify(err));
-                }
-            );
-    };
-
-    var unregisterFromPush = function () {
-        el.push.unregister()
-            .then(
-                _onDeviceUnregistered,
-                function (err) {
-                    alert('UNREGISTER ERROR: ' + JSON.stringify(err));
-                }
-            );
-    };
-
-
+		// triggered when a notification is executed while using the app (foreground)
+		// on Android this may be triggered even when the app started by clicking a notification
+		window.plugin.notification.local.ontrigger = function (id, state, json) {
+			var message = 'ID: ' + id + (json == '' ? '' : '\nData: ' + json);
+			navigator.notification.alert(message, null, 'Notification received while the app was in the foreground', 'Close');
+		};
+		
+		window.plugin.notification.local.add({
+												 id         : 'myID',
+												 title      : 'I will bother you every minute',
+												 message    : '.. until you cancel all notifications',
+												 sound      : null,
+												 repeat     : 'minutely',
+												 autoCancel : false,
+												 date       : new Date(new Date().getTime() + 10 * 1000)
+											 });
+        window.plugin.notification.local.cancelAll(function(){alert("cancelled");});
+	} else {
+		alert("no window.plugin fired");
+	}*/
+}
 })(window, jQuery);

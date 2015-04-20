@@ -32,7 +32,7 @@ var notification;
                         }});
         
         var everlive = new Everlive({
-                    apiKey: "gdirbSCcn4SGeytt",
+                    apiKey: ,
                     scheme: "http"
                 });
         
@@ -124,11 +124,11 @@ var notification;
                     /*var chart = jQuery("#chart").data("kendoChart");
                         chart.setOptions({ categoryAxis: { baseUnit: this.get('selectedCategory') }});*/
                         
-                        /*dataSource.filter({
+                        dataSource.filter({
                             "field": "CreatedAt",
-                            "operator": "eq",
-                            "value": kendo.toString(filterDate, "g")
-                        });*/
+                            "operator": "gte",
+                            "value": filterDate
+                        });
                         /*dataSource.filter({
                             "field": "Note",
                             "operator": "contains",

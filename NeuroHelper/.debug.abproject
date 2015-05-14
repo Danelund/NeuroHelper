@@ -1,6 +1,9 @@
 {
   "CorePlugins": [
-    "de.appplant.cordova.plugin.local-notification@0.8.0dev3",
+    "com.telerik.feedback",
+    "com.telerik.mobiletesting",
+    "com.telerik.plugin.eqatecanalytics",
+    "de.appplant.cordova.plugin.local-notification@0.8.0dev4",
     "org.apache.cordova.battery-status",
     "org.apache.cordova.camera",
     "org.apache.cordova.console",
@@ -20,5 +23,6 @@
     "org.apache.cordova.splashscreen",
     "org.apache.cordova.statusbar",
     "org.apache.cordova.vibration"
-  ]
+  ],
+  "CordovaPluginVariables": {}
 }

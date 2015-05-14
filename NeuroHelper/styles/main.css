@@ -363,17 +363,14 @@ body, html {
     border-style:none !important;
     border-width:0px !important;
 }
-#formlist
-{
-    disp
-}
 .km-switch,.k-slider
 {
     line-height:30px !important;
 }
 .k-slider
 {
-    width:100%;
+    width:100% !important;
+    padding-top:5px !important;
 }
 #btnRegister, #btnNotify
 {
@@ -386,10 +383,16 @@ body, html {
 /*slider hacks*/
 .k-draghandle{background-color:none;}
 .k-slider-selection, .k-slider-track{margin-top:0px !important;}
-
+.sliderwrapper {    margin: 0.5em;}
 #note
 {  background: #fff;
   width: 100%;
   margin: 0.001em;
   border: 1px dashed #ccc;
 border-radius:4px;}
+
+.km-list>li
+{
+    line-height:2em;
+    overflow:show;
+}

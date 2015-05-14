@@ -18,12 +18,13 @@
     <link href="styles/main.css" rel="stylesheet" />
 
     <script src="cordova.js"></script>
-    <script src="kendo/js/jquery.min.js"></script>
+    <script src="http://cdn.kendostatic.com/2015.1.408/js/jquery.min.js"></script>
     <!--<script src="http://cdn.kendostatic.com/2014.1.416/js/kendo.ui.core.min.js"></script>-->
-    <script src="scripts/kendo.all.min.js"></script>
-    <script src="kendo/js/kendo.dataviz.mobile.min.js"></script>
+    <script src="http://cdn.kendostatic.com/2015.1.408/js/kendo.all.min.js"></script>
+    <script src="http://cdn.kendostatic.com/2015.1.408/js/kendo.dataviz.mobile.min.js"></script>
     <script src="https://bs-static.cdn.telerik.com/1.2.13/everlive.all.min.js"></script>
     <script src="scripts/app.js"></script>
+<!--    <script src="scripts/settings.js"></script> -->
     <script src="scripts/push.js"></script>
     <script src="scripts/slider.js"></script>
 </head>
@@ -35,13 +36,14 @@
                 <span data-role="view-title"></span>
             </div>
         </div>
-
+        <div data-role="notification" id="ntf"></div>
         <!-- application views will be rendered here -->
         
         <div data-role="footer">
             <div data-role="tabstrip">
                 <a href="views/home.html" data-icon="compose">Indtast</a>   
                 <a href="views/chart.html" data-icon="featured">Graf</a>
+                <a href="views/settings.html" data-icon="settings">Indstillinger</a>
             </div>
         </div>
     </div>

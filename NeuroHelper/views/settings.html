@@ -1,0 +1,41 @@
+<div data-role="view" data-layout="main" data-model="APP.models.settings" >
+    <div data-role="notification" id="ntf"></div>
+    <ul data-role="listview" data-style="inset" data-type="group">
+        <li>Indstillinger
+            <ul>
+                <li>Påmindelser
+                    <input data-role="switch" id="switchNotification" data-on-label="til" data-off-label="fra" data-bind="checked: notifications" />
+                </li>
+                <li>Interval
+                    <input data-role="dropdownlist" id="notificationgap" data-theme="silver" data-text-field="IntName" data-value-field="value" data-bind="value: notification_interval,
+                          source: intervals,
+                          events: {
+                          change: setNotifications
+                          },
+                          enabled: notifications" style="width:5em">
+                </li>
+            </ul>
+        </li>
+    </ul>
+    <ul data-role="listview" data-style="inset" data-type="group">
+        <li>Spørgsmål
+            <ul>
+                <li>Træthed
+                    <input data-role="switch" data-on-label="til" data-off-label="fra" data-bind="checked: chkEnergy" />
+                </li>
+                <li>Søvn
+                    <input data-role="switch" data-on-label="til" data-off-label="fra" data-bind="checked: chkSleep" />
+                </li>
+                <li>Aktivitet
+                    <input data-role="switch" data-on-label="til" data-off-label="fra" data-bind="checked: chkActivity" />
+                </li>             
+            </ul>
+        </li>
+    </ul>
+</div>
+<ul></ul>
+<div>
+    <!--<div class="centerwidget">
+                <a id="btnNotify" href="#" data-role="button" data-bind="click: notify">Notificer</a> <a id="btnCNotify" href="#" data-role="button" data-bind="click: cancelnotify">Anuller</a>
+                </div>-->
+</div>

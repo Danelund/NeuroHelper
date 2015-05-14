@@ -4,7 +4,7 @@
   "projectVersion": 1,
   "AppIdentifier": "com.telerik.NeuroHelper",
   "DisplayName": "NeuroHelper",
-  "Author": "",
+  "Author": "Jakob Danelund",
   "Description": "NeuroHelper",
   "BundleVersion": "1.0",
   "AndroidVersionCode": "1",
@@ -14,11 +14,10 @@
   ],
   "iOSBackgroundMode": [],
   "ProjectTypeGuids": "{070BCB52-5A75-4F8C-A973-144AF0EAFCC9}",
-  "FrameworkVersion": "3.5.0",
+  "FrameworkVersion": "3.7.0",
   "AndroidPermissions": [],
   "DeviceOrientations": [
-    "Portrait",
-    "Landscape"
+    "Portrait"
   ],
   "AndroidHardwareAcceleration": "false",
   "iOSStatusBarStyle": "Default",

@@ -9,18 +9,17 @@
                                  { field: 'Energi', name: 'Energi', style: 'smooth', note: 'Note'},
                                  { field: 'Pause', name: 'Pause',  style: 'step'}
                              ]"
-                 data-category-axis="{ field: 'CreatedAt', type: 'date' }"
-                 data-series-hover="onSeriesHover"
-                 data-bind="source: ds"></div>
+                 data-category-axis="{ field: 'CreatedAt', type: 'date', baseUnit: 'days' }"
+                 data-bind="source: ds, events: { seriesHover: onSeriesHover }"></div>
         </li>
-        <li><label>Vælg interval</label><input data-role="dropdownlist"
+        <!--<li><label>Vælg interval</label><input data-role="dropdownlist"
            data-theme="silver"
            data-text-field="CatName"
            data-value-field="value"
                data-bind="value: selectedCategory,
                           source: intervals"
                style="width: 10em"
-               />
+               />-->
         <li><label>Periode</label><input data-role="dropdownlist" data-theme="silver" data-text-field="PName" data-value-field="value" data-bind="value: selectedPeriod,
                           source: periods,
                           events: {

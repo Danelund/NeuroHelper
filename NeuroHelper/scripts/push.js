@@ -47,7 +47,7 @@ function onDeviceReady() {
     {
         if(notification)
         {
-        notification.local.cancelAll(function(){alert("cancelled");});
+        notification.local.cancelAll(function(){console.log("notifications cancelled");});
         }
     }
     
@@ -55,13 +55,14 @@ function onDeviceReady() {
     {
          //set hour to 10 for starting hour 
         var hour = 10;
+        var endhour = 22;
         
         //set a notificationDate time.
         var notificationDate = new Date();
         //manipulate the dateobject to fit, 10:00:00
         notificationDate.setMinutes(0); notificationDate.setSeconds(0);
         //loop as long as the notification hour interval doesnt exceed 12 hours (from 10-22).
-        while(hour < 22)
+        while(hour < endhour)
         {
            notificationDate.setHours(hour);
              
@@ -71,10 +72,11 @@ function onDeviceReady() {
             message : 'Det er tid til at du skal registrere din energi',
              repeat : 'daily',
          autoCancel : true,
-               date : notificationDate
-        },function(){alert('alarm sat til kl. ' + notificationDate.getHour());});
+               date : notificationDate.getDate()
+        },function(){alert('alarm sat til kl. ' + notificationDate.getHours());});
             
         hour = hour + interval;
+        console.log(hour);
         console.log(notificationDate)
         }
        

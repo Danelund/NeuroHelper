@@ -46,22 +46,15 @@
                 <br />
             </li>
         </ul>
-        <!-- Activity -->
-        <ul data-role="listview" data-style="inset" data-type="group" id="ActivityForm">
-            <li>Aktivitetsniveau
-                <ul>
-                    <li>
-                        Vurdér dit aktivitetsniveau fra 1-10</li>
-                    <li>
-                        <input id="chkAGreen" type="checkbox" data-role="switch" data-bind="checked: activity_green" />
-                        <input id="chkAYellow" type="checkbox" data-role="switch" data-bind="checked: activity_yellow" />
-                        <input id="chkARed" type="checkbox" data-role="switch" data-bind="checked: activity_red" />
-                    </li>
-            </li>
-            </ul>
-            <br />
-            </li>
-        </ul>
+        <div id="ActivityForm">
+            <div class="centerwidget" style="margin:10px 0;">
+            <span id="activityText">Aktiviteter siden sidst</span><span id="lastRegister"></span>
+            <br /><br />
+                <input id="chkAGreen" type="checkbox" data-role="switch" data-bind="checked: activity_green" />
+                <input id="chkAYellow" type="checkbox" data-role="switch" data-bind="checked: activity_yellow" />
+                <input id="chkARed" type="checkbox" data-role="switch" data-bind="checked: activity_red" />
+            </div>
+        </div>
         <div class="centerwidget">
             <a id="btnRegister" href="#foo" data-role="button" data-bind="click: register">Registrer</a>
         </div>

@@ -396,3 +396,7 @@ border-radius:4px;}
     line-height:2em;
     overflow:show;
 }
+.neglect
+{
+    border-left: 0.6em solid #FF0000;
+}

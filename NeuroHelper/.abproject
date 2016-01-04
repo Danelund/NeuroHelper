@@ -3,10 +3,10 @@
   "ProjectGuid": "219d19d7-faca-4b59-a9a6-ed594a2da7c9",
   "projectVersion": 1,
   "AppIdentifier": "com.telerik.NeuroHelper",
-  "DisplayName": "NeuroHelper",
+  "DisplayName": "Min Energi",
   "Author": "Jakob Danelund",
-  "Description": "NeuroHelper",
-  "BundleVersion": "1.0",
+  "Description": "Få hjælp til at lære dine egne grænser at kende, og håndtér din energi bedre.",
+  "BundleVersion": "0.8",
   "AndroidVersionCode": "1",
   "iOSDeviceFamily": [
     "1",
@@ -14,12 +14,13 @@
   ],
   "iOSBackgroundMode": [],
   "ProjectTypeGuids": "{070BCB52-5A75-4F8C-A973-144AF0EAFCC9}",
-  "FrameworkVersion": "3.7.0",
+  "FrameworkVersion": "4.0.0",
   "AndroidPermissions": [],
   "DeviceOrientations": [
-    "Portrait"
+    "Portrait",
+    "Landscape"
   ],
-  "AndroidHardwareAcceleration": "false",
+  "AndroidHardwareAcceleration": "true",
   "iOSStatusBarStyle": "Default",
   "Framework": "Cordova",
   "WP8TileTitle": "",

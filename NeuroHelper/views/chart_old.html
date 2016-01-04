@@ -1,27 +1,29 @@
 <div data-role="view" data-layout="main" data-model="APP.models.chart" data-show="APP.models.chart.show">
-    <div id="tabstrip">
-                            <ul>
-                                <li class="k-state-active">
-                                    Graf
-                                </li>
-                                <li>
-                                    Oversigt
-                                </li>
-                            </ul>
-        <div>
     <!--<h1 data-bind="html: title"></h1>-->
-    <!--<div id="grid">
-	</div>-->
-    <!--/*{ field: 'activity_green', name: 'Grøn Aktivitet',  style: 'step'},
-           						 { field: 'activity_yellow', name: 'Gul Aktivitet',  style: 'step'},
-           						 { field: 'activity_red', name: 'Rød Aktivitet',  style: 'step'},*/
+    <div id="grid">
+	</div>
+    <!--  <div data-role="grid"
+          		 data-theme="silver"
+                 date-scrollable="true"
+          		 data-pageable="true"
+                 data-columns="[
+                                 { field:'CreatedAt', title: 'Indtastet' },
+                                 { field: 'Note', title: 'Note' },
+                                { field: 'Energi', title: 'Energi'},
+                                 { field: 'activity_green', title: 'Grøn Aktivitet'},]"
+           						
+                 data-bind="source: ds"
+                 style="height: 200px"></div>
     { field: 'activity_yellow', title: 'Gul Aktivitet', format:'{0:c}'},{ field: 'activity_red', title: 'Rød Aktivitet', format:'{0:c}'}]-->
     <ul data-role="listview" data-style="inset" data-type="group">
         <li>Graf
             <ul>
                 <li>
-                    <div id="chart" data-role="sparkline" data-theme="silver" data-legend="{ position: 'bottom' }" data-series-defaults="{type: 'line', aggregate: 'avg'  }" data-series="[
+                    <div id="chart" data-role="chart" data-theme="silver" data-legend="{ position: 'bottom' }" data-series-defaults="{ type: 'line', aggregate: 'avg'  }" data-series="[
                                  { field: 'Energi', name: 'Energi', style: 'smooth', note: 'Note'},
+                                 { field: 'activity_green', name: 'Grøn Aktivitet',  style: 'step'},
+           						 { field: 'activity_yellow', name: 'Gul Aktivitet',  style: 'step'},
+           						 { field: 'activity_red', name: 'Rød Aktivitet',  style: 'step'},
                              ]" data-category-axis="{ field: 'CreatedAt', type: 'date', baseUnit: 'days' }" data-bind="source: ds, events: { seriesHover: onSeriesHover }"></div>
                 </li>
                 <!--<li><label>Vælg interval</label><input data-role="dropdownlist"
@@ -46,9 +48,4 @@
                 </div>
             </li>
     </ul>
-    </div>
-    <div>
-        <div id="spreadsheet" style="width: 100%"></div>
-    </div>
-</div>
     

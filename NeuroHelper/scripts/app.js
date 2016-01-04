@@ -14,15 +14,19 @@ var notification;
     }
 
     //allow app feedback
-    document.addEventListener('deviceready', function () {
+    /*document.addEventListener('deviceready', function () {
         feedback.initialize('9e9996e0-f434-11e4-af76-2f36f3c79373');
-    });
+    });*/
 
     //check for specific app settings
     function checkNeglect() {
         jQuery("body").toggleClass("neglect", (localStorage.getItem('chkNeglect') == 'true'));
     }
 
+    //check for specific app settings
+    function checkActivity() {
+        return localStorage.getItem('chkActivity') == 'true';
+    }
 
     // this function is called by Cordova when the application is loaded by the device
     document.addEventListener('deviceready', function () {
@@ -44,6 +48,13 @@ var notification;
                 // binding to the Order type in Everlive
                 typeName: "BreakPoint"
             },
+            group: {
+              field: "DayTime"  
+            },
+            sort: {
+                field: "DayTime",
+                dir: "desc"
+            },
             schema: {
                 model: {
                     id: "Id",
@@ -63,11 +74,17 @@ var notification;
                         Energi: {
                             type: "number"
                         },
-                        Pause: {
-                            type: "bool"
-                        },
                         Note: {
                             type: "string"
+                        },
+                        activity_green: {
+                            type: "bool"
+                        },
+                        activity_yellow: {
+                            type: "bool"
+                        },
+                        activity_red: {
+                            type: "bool"
                         }
                     }
                 }
@@ -84,7 +101,7 @@ var notification;
 
         console.log((localStorage.getItem('chkEnergy') == 'true'));
         console.log(localStorage.getItem('chkSleep'));
-        console.log(localStorage.getItem('chkActivity'));
+        console.log(localStorage.getItem('chkActivity') == 'true');
         console.log(localStorage.getItem('notifications'));
         console.log(localStorage.getItem('notification_interval'));
         // create an object to store the models for each view
@@ -92,7 +109,7 @@ var notification;
             models: {
                 home: {
                     title: 'Registrér',
-                    energi: 3,
+                    energi: 5,
                     activity_red: 0,
                     activity_yellow: 0,
                     activity_green: 0,
@@ -104,63 +121,66 @@ var notification;
                             'Energi': this.get("energi"),
                             'Note': this.get("note")
                         };
-                        if (jQuery("SleepForm").is(":visible")) {
+                        if (jQuery("#SleepForm").is(":visible")) {
+                            console.log("Sleep is logged");
                             //add sleep parameters
                             newDataPoint.sleep = this.get('sleep');
                         }
-                        if (jQuery("ActivityForm").is(":visible")) {
+
+                        if (jQuery("#ActivityForm").is(":visible")) {
+                            console.log("Activity is logged");
                             newDataPoint.activity_red = this.get("activity_red");
                             newDataPoint.activity_yellow = this.get("activity_yellow");
                             newDataPoint.activity_green = this.get("activity_green");
-
                         }
-                        if (localStorage.getItem('chkActivity') == 'true') {
-
-                        }
+                        console.log(newDataPoint);
                         dataSource.add(newDataPoint);
-                        showPopup("Tak for din indtastning!");
-                        this.resetInput();
+						jQuery("#ThankYou").data("kendoMobileModalView").open();
 
                         //set recent data to now for register
                         localStorage.setItem('lastregister', Date.now());
                         console.log("breakpoint registered");
                         console.log(device.uuid);
+
+                        //and set next notification
+                        app.setnextnotification();
                         this.show();
-                    },
-                    resetInput: function () {
-                        this.set("note", '');
-                        this.set("energi", 5);
-                        this.set("sleep", 5);
-                        this.set("activity_green", false);
-                        this.set("activity_yellow", false);
-                        this.set("activity_red", false);
                     },
                     show: function () {
                         checkNeglect();
                         var lastregister = new Date(parseInt(localStorage.getItem('lastregister')));
+                        var nextregister = new Date((lastregister.getTime() + ((parseInt(localStorage.getItem('notification_interval')) * 0.5) * 60 * 60 * 1000)));
                         var current = new Date();
-                        jQuery("#lastRegister").text(' (kl. ' + lastregister.getHours() + ':' + lastregister.getMinutes() + ')');
-                        console.log(dataSource);
-                        console.log(lastregister);
+
+                        jQuery(".lastRegister").text(' (kl. ' + lastregister.getHours() + ':' + lastregister.getMinutes() + ')');
+                        jQuery(".nextRegister").text(' (kl. ' + nextregister.getHours() + ':' + nextregister.getMinutes() + ')');
                         
+                        //hide by default
+						jQuery("#SleepForm").hide();
+                        jQuery("#ActivityForm").hide();
+
+                        console.log("activity checks for : ", checkActivity());
                         //if last register was yesterday, and it's over 6 o'clock, show sleep measurement
                         if (lastregister.getDay() != current.getDay() && current.getHours() > 6) {
-                            jQuery("#ActivityForm").hide();
                             jQuery("#SleepForm").show();
-                        } else {
-                            jQuery("#SleepForm").hide();
-                            jQuery("#ActivityForm").show()
+                        } else if (checkActivity()) {
+                            jQuery("#ActivityForm").show();
                         }
+                        /*//if notifications are enabled, and we are not currently past half the time until next notification, show a thank you screen
+                        if ((localStorage.getItem('notifications') == 'true') && nextregister.getTime() > current.getTime()) {
+                                console.log('notifications are screen should be set to thanks for notification');
+                        		jQuery("#ThankYou").show();
+                        		jQuery("#registerForm").hide();
+                        }*/
                     }
+
                 },
                 settings: {
                     chkNeglect: (localStorage.getItem('chkNeglect') == 'true'),
+                    chkActivity: (localStorage.getItem('chkActivity') == 'true'),
                     notifications: (localStorage.getItem('notifications') == 'true'),
-                    notification_interval: localStorage.getItem('notification_interval'),
+                    notification_interval: (localStorage.getItem('notification_interval') ? localStorage.getItem('notification_interval') : 2),
                     intervals: [{
-                            'IntName': 'Vælg interval',
-                            'value': undefined
-                                    },{
                             'IntName': '1. time',
                             'value': '1'
                                     },
@@ -179,13 +199,14 @@ var notification;
                     saveSettings: function (e) {
                         console.log("writing settings");
                         localStorage.setItem('chkNeglect', this.get('chkNeglect'));
+                        localStorage.setItem('chkActivity', this.get('chkActivity'));
                         localStorage.setItem('notifications', this.get('notifications'));
                         localStorage.setItem('notification_interval', this.get('notification_interval'));
 
                         if (this.get('notifications')) {
                             //cancel existing notifications if there are any
                             app.cancelnotifications();
-                            app.setupnotificationinterval(parseInt(this.get('notification_interval')));
+                            app.setnextnotification();
                             //showPopup("påmindelser slået til");
                             console.log("notification set");
                         } else {
@@ -253,14 +274,84 @@ var notification;
                             "value": filterDate
                         });
                         console.log(this.get('selectedCategory'));
-                        console.log(dataSource);
+                        console.log(dataSource.data);
                         console.log(filterDate);
                     },
                     ds: dataSource,
                     onSeriesHover: function (e) {
                         jQuery("#chartnote").html(e.dataItem.CreatedAt.getHours() + ":" + e.dataItem.CreatedAt.getMinutes() + " - " + e.dataItem.CreatedAt.toLocaleDateString() + "<br />" + e.dataItem.Note);
                         console.log(e.dataItem);
-                    }
+                    },
+                    show: function(){
+                        jQuery("#tabstrip").kendoTabStrip({
+                            animation:  {
+                                open: {
+                                    effects: "fadeIn"
+                                }
+                            }
+                        });
+                        jQuery("#spreadsheet").kendoSpreadsheet({
+                        columns: 20,
+                        rows: 100,
+                        sheets: [{
+                            name: "Breakpoints",
+                            dataSource: dataSource,
+                            toolbar: false,
+                			sheetsbar: false,
+                            rows: [{
+                                height: 30,
+                                cells: [
+                                {
+                                    bold: "true",
+                                    background: "#9c27b0",
+                                    textAlign: "center",
+                                    color: "white"
+                                },{
+                                    bold: "true",
+                                    background: "#9c27b0",
+                                    textAlign: "center",
+                                    color: "white"
+                                },{
+                                    bold: "true",
+                                    background: "#9c27b0",
+                                    textAlign: "center",
+                                    color: "white"
+                                },{
+                                    bold: "true",
+                                    background: "#9c27b0",
+                                    textAlign: "center",
+                                    color: "white"
+                                },{
+                                    bold: "true",
+                                    background: "#9c27b0",
+                                    textAlign: "center",
+                                    color: "white"
+                                }]
+                            }],
+                            columns: [
+                                { width: 45 },
+                                { width: 45 },
+                                { width: 45 },
+                                { width: 45 },
+                                { width: 45 }
+                            ]
+                        }]
+                    });
+                        jQuery("#grid").kendoGrid({
+                        dataSource: dataSource,
+                        height: 100,
+                        sortable: true,
+                        pageable: true,
+                        columns: [
+                            { field:'CreatedAt', title: 'Indtastet' },
+                            { field: "Note",title: "Note"}, 
+                            { field: 'Energi', title: 'Energi'},
+                            { field: 'activity_green', title: 'Grøn Aktivitet'},
+                            { field: 'activity_yellow', title: 'Gul Aktivitet'},
+                            { field: 'activity_red', title: 'Rød Aktivitet'},
+                        ]
+                    });
+                    },
                 },
             }
         });

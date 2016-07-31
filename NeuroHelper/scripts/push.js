@@ -41,7 +41,7 @@
                 console.log("trying to set notifiation");
                 //set hour to 10 for starting hour 
                 var starthour = 8;
-                var endhour = 22;
+                var endhour = 21;
 
                 //set a notificationDate
                 var notificationDate = new Date();
@@ -59,13 +59,14 @@
                 if (notificationDate.getHours() < starthour) {
                     notificationDate.setHours(starthour);
                 }
-                console.log("sætter til time: " + notificationDate.getHours());
+                //console.log("sætter til time: " + notificationDate.getHours());
+                alert("sætter næste alarm til kl.: " + notificationDate.getHours() + " d." + notificationDate.getDate());
 
                 this.notify({
                     id: 'regular-' + notificationDate.getHours(),
                     title: 'Stop op',
                     message: 'Det er tid til at mærke efter',
-                    autoCancel: true,
+                    autoCancel: false,
                     date: notificationDate
                 }, function () {
                     console.log('påmindelse sat til kl. ' + notificationDate.getHours() + ":" + notificationDate.getMinutes());

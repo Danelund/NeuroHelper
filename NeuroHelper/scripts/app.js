@@ -38,7 +38,7 @@ var notification;
         var dataSource = new kendo.data.DataSource({
             type: "everlive",
             autoSync: true,
-            serverFiltering: true,
+            serverFiltering: false,
             filter: {
                 field: "DeviceID",
                 operator: "eq",
@@ -48,16 +48,16 @@ var notification;
                 // binding to the Order type in Everlive
                 typeName: "BreakPoint"
             },
-            group: {
+            /*group: {
               field: "DayTime"  
-            },
+            },*/
             sort: {
-                field: "DayTime",
+                field: "CreatedAt",
                 dir: "desc"
             },
             schema: {
                 model: {
-                    id: "Id",
+                    id: everlive.idField,
                     fields: {
                         // default Everlive fields
                         CreatedBy: {
@@ -114,6 +114,9 @@ var notification;
                     activity_yellow: 0,
                     activity_green: 0,
                     note: '',
+                    exitapp : function (e) {
+                        navigator.app.exitApp();
+                    },
                     register: function (e) {
                         e.preventDefault();
                         var newDataPoint = {
@@ -145,8 +148,18 @@ var notification;
                         //and set next notification
                         app.setnextnotification();
                         this.show();
+                        this.note = '';
                     },
                     show: function () {
+                        
+ /*                       // set kendoslider
+                        var slider = jQuery("#slider").kendoSlider({
+                        min: 0,
+                        max: 10,
+                        smallStep: 1
+                    }).data("kendoSlider");*/
+
+                        
                         checkNeglect();
                         var lastregister = new Date(parseInt(localStorage.getItem('lastregister')));
                         var nextregister = new Date((lastregister.getTime() + ((parseInt(localStorage.getItem('notification_interval')) * 0.5) * 60 * 60 * 1000)));
@@ -232,11 +245,17 @@ var notification;
                 },
                 chart: {
                     title: 'Chart',
-                    selectedPeriod: 'days',
-                    periods: [{
+                    selectedPeriod: 'all',
+                    periods: [
+                                {
+                            'PName': 'Alt',
+                            'value': 'all'
+                                },
+                        {
                             'PName': 'Måned',
                             'value': 'weeks'
                                 },
+                      
                         {
                             'PName': 'Uge',
                             'value': 'days'
@@ -259,8 +278,13 @@ var notification;
                             case 'hours':
                                 filterDate.setDate(filterDate.getDate() - 1);
                                 break;
+                            case 'all':
+                                filterDate.setDate(-365);
+                                this.selectedPeriod = 'days'
+                                break;
                         }
-                        console.log(dataSource);
+                        console.log(this.get('selectedCategory'));
+                        
                         var chart = jQuery("#chart").data("kendoChart");
                         chart.setOptions({
                             categoryAxis: {
@@ -273,8 +297,8 @@ var notification;
                             "operator": "gte",
                             "value": filterDate
                         });
-                        console.log(this.get('selectedCategory'));
-                        console.log(dataSource.data);
+                        
+                        //console.log(dataSource.data);
                         console.log(filterDate);
                     },
                     ds: dataSource,
@@ -290,67 +314,124 @@ var notification;
                                 }
                             }
                         });
-                        jQuery("#spreadsheet").kendoSpreadsheet({
-                        columns: 20,
-                        rows: 100,
-                        sheets: [{
-                            name: "Breakpoints",
-                            dataSource: dataSource,
-                            toolbar: false,
-                			sheetsbar: false,
-                            rows: [{
-                                height: 30,
-                                cells: [
-                                {
-                                    bold: "true",
-                                    background: "#9c27b0",
-                                    textAlign: "center",
-                                    color: "white"
-                                },{
-                                    bold: "true",
-                                    background: "#9c27b0",
-                                    textAlign: "center",
-                                    color: "white"
-                                },{
-                                    bold: "true",
-                                    background: "#9c27b0",
-                                    textAlign: "center",
-                                    color: "white"
-                                },{
-                                    bold: "true",
-                                    background: "#9c27b0",
-                                    textAlign: "center",
-                                    color: "white"
-                                },{
-                                    bold: "true",
-                                    background: "#9c27b0",
-                                    textAlign: "center",
-                                    color: "white"
-                                }]
-                            }],
-                            columns: [
-                                { width: 45 },
-                                { width: 45 },
-                                { width: 45 },
-                                { width: 45 },
-                                { width: 45 }
-                            ]
-                        }]
-                    });
+
+            
+            var dataSource2 = new kendo.data.DataSource({
+            type: "everlive",
+            serverGrouping: false,
+            filter: {
+                field: "DeviceID",
+                operator: "eq",
+                value: device.uuid
+            },
+            transport: {
+                // binding to the Order type in Everlive
+                typeName: "BreakPoint"
+            },
+            schema: {
+                type: "json",
+                model: {
+                    id: everlive.idField,
+                    fields: {
+                        // default Everlive fields
+                        CreatedBy: { type: "string"},
+                        CreatedAt: {type: "date"},
+                        ModifiedAt: {type: "date"},
+
+                        // type fields
+                        Energi: {type: "number"},
+                        Note: {type: "string"},
+                        
+                        /*activity_green: {
+                            type: "bool"
+                        },
+                        activity_yellow: {
+                            type: "bool"
+                        },
+                        activity_red: {
+                            type: "bool"
+                        }*/
+                    }
+                }
+            },
+                
+        });
+         
+		jQuery("#listView").kendoListView({
+                dataSource: dataSource2,
+                template: kendo.template(jQuery("#template").html())
+            });
+                           var schedulerDataSource = new kendo.data.SchedulerDataSource({
+            type: "everlive",
+            transport: {
+                // binding to the Order type in Everlive
+                typeName: "BreakPoint"
+            },
+            schema: {
+                model: {
+                    id: "Id",
+                    fields: {
+                        // default Everlive fields
+                        CreatedBy: {
+                            type: "string"
+                        },
+                        CreatedAt: {
+                            type: "date"
+                        },
+                        ModifiedAt: {
+                            type: "date"
+                        },
+
+                        // type fields
+                        Energi: {
+                            type: "number"
+                        },
+                        Note: {
+                            type: "string"
+                        },
+                        activity_green: {
+                            type: "bool"
+                        },
+                        activity_yellow: {
+                            type: "bool"
+                        },
+                        activity_red: {
+                            type: "bool"
+                        },
+                        // type fields, projected to the scheduler format
+                        title: { from: "Title", defaultValue: "No title", validation: { required: true } },
+                        start: { type: "date", from: "CreatedAt" },
+                        end: { type: "date", from: "CreatedAt" },
+                        description: { from: "Energi" },
+        }}}});
+        /*jQuery("#scheduler").kendoScheduler({
+            date: Date.now(),
+            //startTime: ,
+            height: 500,
+            views: [
+                "day",
+                { type: "workWeek"},
+                "week",
+                "month",
+                 { type: "agenda", selected: true },
+                "timeline"
+            ],
+            dataSource: schedulerDataSource,
+            timezone: "Etc/UTC"
+        });
+                        
                         jQuery("#grid").kendoGrid({
-                        dataSource: dataSource,
-                        height: 100,
-                        sortable: true,
-                        pageable: true,
+                        dataSource: dataSource2,
+                        height: 300,
+                        sortable: false,
+                        pageable: false,
                         columns: [
-                            { field:'CreatedAt', title: 'Indtastet' },
+                            { field:'CreatedAt', title: 'Indtastet',  format: "{0:MM/dd/yyyy}" },
                             { field: "Note",title: "Note"}, 
                             { field: 'Energi', title: 'Energi'},
-                            { field: 'activity_green', title: 'Grøn Aktivitet'},
-                            { field: 'activity_yellow', title: 'Gul Aktivitet'},
-                            { field: 'activity_red', title: 'Rød Aktivitet'},
+                            { field: 'activity_yellow', title: 'Gul Aktivitet', format:'{0:c}'},{ field: 'activity_red', title: 'Rød Aktivitet', format:'{0:c}'}
                         ]
-                    });
+                    });*/
                     },
                 },
             }

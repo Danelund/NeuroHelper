@@ -379,6 +379,8 @@ html {
     border: 1px dashed #ccc;
     border-radius: 4px;
 }
+
+/**** ACTIVITY FORM CUSTOMIZATION ****/
 .km-list>li {
     line-height: 2em;
     overflow: show;
@@ -432,19 +434,19 @@ h4 {
     animation-timing-function: linear;
     overflow: auto;
 }
-#ActivityForm .km-switch:nth-of-type(1) /**grøn aktivitet **/
+#ActivityForm .km-switch:nth-of-type(1), .activity-green-true /**grøn aktivitet **/
 {
     background-image: -moz-radial-gradient(45px 45px 45deg, circle cover, yellow 0%, darkgreen 100%, green 95%);
     background-image: -webkit-radial-gradient(45px 45px, circle cover, darkgreen, green);
     background-image: radial-gradient(45px 45px 45deg, circle cover, yellow 0%, darkgreen 100%, green 95%);
 }
-#ActivityForm .km-switch:nth-of-type(2) { /** gul aktivitet **/
+#ActivityForm .km-switch:nth-of-type(2), .activity-yellow-true { /** gul aktivitet **/
     background-image: -moz-radial-gradient(45px 45px 45deg, circle cover, yellow 0%, orange 100%, red 95%);
     background-image: -webkit-radial-gradient(45px 45px, circle cover, yellow, orange);
     background-image: radial-gradient(45px 45px 45deg, circle cover, yellow 0%, orange 100%, red 95%);
     
 }
-#ActivityForm .km-switch:nth-of-type(3) { /**rød aktivitet **/
+#ActivityForm .km-switch:nth-of-type(3), .activity-red-true { /**rød aktivitet **/
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ff3019), color-stop(100%,#cf0404)); /* Chrome,Safari4+ */
 background: -webkit-radial-gradient(top, #ff3019 0%,#cf0404 100%); /* Chrome10+,Safari5.1+ */
 background: -o-radial-gradient(top, #ff3019 0%,#cf0404 100%); /* Opera 11.10+ */
@@ -473,6 +475,17 @@ background: radial-gradient(to bottom, #ff3019 0%,#cf0404 100%); /* W3C */
     margin-top:2em;
     display:none;
 }
+.tinycircle 
+{
+    margin:.3em .1em 0 .1em;
+    float:left;
+    width:1em;
+    height:1em;
+}
+.energylevel
+{background:#00adef; float:left;}
+.outerenergy
+{width:5em; text-align:center; font-weight:bold;float:left;color:#fff;margin-top:.3em;}
 #ThankYou
 {
 }

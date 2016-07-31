@@ -1,5 +1,13 @@
 <div data-role="view" data-layout="main" data-model="APP.models.chart" data-show="APP.models.chart.show">
-    <div id="tabstrip">
+    <p><br/>
+         <label>Vis indtastninger for</label>
+                    <input data-role="dropdownlist" data-theme="silver" data-text-field="PName" data-value-field="value" data-bind="value: selectedPeriod,
+                          source: periods,
+                          events: {
+                          change: axisChange}" style="width: 10em">
+    </p>
+   
+    <div id="tabstrip" style="max-height:100%;">
                             <ul>
                                 <li class="k-state-active">
                                     Graf
@@ -9,46 +17,35 @@
                                 </li>
                             </ul>
         <div>
-    <!--<h1 data-bind="html: title"></h1>-->
-    <!--<div id="grid">
-	</div>-->
-    <!--/*{ field: 'activity_green', name: 'Grøn Aktivitet',  style: 'step'},
-           						 { field: 'activity_yellow', name: 'Gul Aktivitet',  style: 'step'},
-           						 { field: 'activity_red', name: 'Rød Aktivitet',  style: 'step'},*/
-    { field: 'activity_yellow', title: 'Gul Aktivitet', format:'{0:c}'},{ field: 'activity_red', title: 'Rød Aktivitet', format:'{0:c}'}]-->
-    <ul data-role="listview" data-style="inset" data-type="group">
-        <li>Graf
-            <ul>
-                <li>
-                    <div id="chart" data-role="sparkline" data-theme="silver" data-legend="{ position: 'bottom' }" data-series-defaults="{type: 'line', aggregate: 'avg'  }" data-series="[
+                    <div id="chart" data-role="chart" data-theme="silver" data-legend="{ position: 'bottom' }" data-series-defaults="{type: 'line', aggregate: 'avg'  }" data-series="[
                                  { field: 'Energi', name: 'Energi', style: 'smooth', note: 'Note'},
-                             ]" data-category-axis="{ field: 'CreatedAt', type: 'date', baseUnit: 'days' }" data-bind="source: ds, events: { seriesHover: onSeriesHover }"></div>
-                </li>
-                <!--<li><label>Vælg interval</label><input data-role="dropdownlist"
-           data-theme="silver"
-           data-text-field="CatName"
-           data-value-field="value"
-               data-bind="value: selectedCategory,
-                          source: intervals"
-               style="width: 10em"
-               />-->
-                <li>
-                    <label>Periode</label>
-                    <input data-role="dropdownlist" data-theme="silver" data-text-field="PName" data-value-field="value" data-bind="value: selectedPeriod,
-                          source: periods,
-                          events: {
-                          change: axisChange}" style="width: 10em"> </li>
-                </li>
-            </ul>
-            <li>
+                             ]" data-category-axis="{ field: 'CreatedAt', type: 'date', baseUnit: 'days', labels: {
+        dateFormats: {
+            days: 'dd',
+            weeks: 'dd/M',
+            hours: 'hh'
+        }
+    } }" data-bind="source: ds, events: { seriesHover: onSeriesHover }" style="height:15em;"></div>
+    
                 <label>Note</label>
                 <div id="chartnote">
                 </div>
-            </li>
-    </ul>
+
     </div>
     <div>
-        <div id="spreadsheet" style="width: 100%"></div>
+<!--        <div id="grid" style="width: 100%"></div>-->
+        <div data-role="listview"
+                 data-template="template"
+                 data-bind="source: ds"></div>
+        </div>
+        <script type="text/x-kendo-template" id="template">
+            #: kendo.toString(CreatedAt, "Kl. hh (dd/MM/yy)")# <span class="outerenergy"><span class="energylevel" style="width:#:Energi/2#em">#:Energi#</span></span>
+                
+                <span class="tinycircle activity-green-#:activity_green#"></span>
+                <span class="tinycircle activity-yellow-#:activity_yellow#"></span>
+                <span class="tinycircle activity-red-#:activity_red#"></span><br />
+                #:Note#
+    </script>
     </div>
 </div>
     
